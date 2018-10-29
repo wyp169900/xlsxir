@@ -70,7 +70,7 @@ defmodule Xlsxir.Unzip do
     path = String.to_charlist(path)
     case :zip.list_dir(path) do
       {:ok, file_list}  ->
-        indexes = Enum.filter_map(file_list,
+        indexes = Enum.filter(file_list,
         fn file ->
           case file do
             {:zip_file, filename, _, _, _, _} ->
@@ -78,7 +78,8 @@ defmodule Xlsxir.Unzip do
             _ ->
               nil
           end
-        end,
+        end)
+        |> Enum.map(
         fn {:zip_file, filename, _, _, _, _} ->
           index = filename
           |> to_string
